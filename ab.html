@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About Me - Momna Kainat</title>
+<style>
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #6a9fb5;
+    --background-color: #f0f4f8;
+    --taskbar-bg: #34495e;
+    --button-bg: #4a90e2;
+    --button-hover-bg: #50e3c2;
+    --text-color: #34495e;
+    --dome-bg: #6a9fb5;
+    --dome-shadow: rgba(74, 144, 226, 0.4);
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+
+  .taskbar {
+    width: 100%;
+    background-color: var(--taskbar-bg);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .taskbar button {
+    background-color: var(--button-bg);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .taskbar button:hover {
+    background-color: var(--button-hover-bg);
+  }
+
+  .dome-container {
+    width: 320px;
+    height: 240px;
+    background: var(--dome-bg);
+    border-radius: 160px 160px 0 0;
+    box-shadow: 0 8px 20px var(--dome-shadow);
+    position: relative;
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+
+  .profile-pic {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border: 6px solid white;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-radius: 12px; /* square with slightly rounded edges */
+    background-color: white;
+    position: absolute;
+    top: -70px; /* half the height to center it on dome top edge */
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .info-container {
+    margin-top: 110px; /* space below dome and profile pic */
+    text-align: center;
+  }
+
+  .info-container h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  .info-container p {
+    margin: 6px 0;
+    font-size: 1.15rem;
+    color: var(--secondary-color);
+    font-weight: 600;
+  }
+
+  .info-container p.subtle {
+    font-weight: 400;
+    color: #567a94;
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="taskbar">
+  <button onclick="goBack()">← Back to Main</button>
+</div>
+
+<div class="dome-container">
+  <img src="https://via.placeholder.com/140" alt="Momna Kainat" class="profile-pic" />
+</div>
+
+<div class="info-container">
+  <h1>Momna Kainat</h1>
+  <p>Pharm D Student</p>
+  <p class="subtle">6th Semester</p>
+  <p class="subtle">UVAS Lahore</p>
+</div>
+
+<script>
+  function goBack() {
+    window.location.href = 'mental heealth dashboard.html'; // Adjust if needed
+  }
+</script>
+
+</body>
+</html>

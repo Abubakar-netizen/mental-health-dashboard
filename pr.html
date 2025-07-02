@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>About Mental Health Dashboard</title>
+<style>
+  :root {
+    --primary-color: #2c3e50;
+    --secondary-color: #6a9fb5;
+    --background-color: #f0f4f8;
+    --button-bg: #4a90e2;
+    --button-hover-bg: #50e3c2;
+    --text-color: #34495e;
+    --taskbar-bg: #34495e;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--background-color);
+    margin: 0;
+    padding: 0 20px 40px;
+    color: var(--text-color);
+  }
+
+  .taskbar {
+    background-color: var(--taskbar-bg);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .taskbar button {
+    background-color: var(--secondary-color);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .taskbar button:hover {
+    background-color: var(--button-hover-bg);
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 30px auto;
+  }
+
+  h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+  }
+
+  .btn-row {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+  }
+
+  .btn-row button {
+    background-color: var(--button-bg);
+    border: none;
+    color: white;
+    padding: 14px 26px;
+    font-size: 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background-color 0.4s ease, transform 0.3s ease;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+  }
+
+  .btn-row button:hover {
+    background-color: var(--button-hover-bg);
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(80, 227, 194, 0.6);
+  }
+
+  .content {
+    background: white;
+    border-radius: 8px;
+    padding: 25px 30px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-height: 320px;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: var(--primary-color);
+    transition: opacity 0.4s ease;
+  }
+
+  .content h2 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: var(--secondary-color);
+  }
+
+  ul {
+    margin-top: 10px;
+    padding-left: 20px;
+    color: var(--text-color);
+  }
+
+  ul li {
+    margin-bottom: 10px;
+  }
+</style>
+</head>
+<body>
+
+<div class="taskbar">
+  <button onclick="goBack()">← Back to Main</button>
+</div>
+
+<div class="container">
+  <h1>About Mental Health Dashboard</h1>
+
+  <div class="btn-row">
+    <button onclick="showContent('want')">What I Want</button>
+    <button onclick="showContent('do')">What I Do</button>
+    <button onclick="showContent('analysis')">Analysis & Results</button>
+    <button onclick="showContent('next')">Next Steps</button>
+  </div>
+
+  <div id="content" class="content">
+    Click any button above to learn more about the project.
+  </div>
+</div>
+
+<script>
+  const contentDiv = document.getElementById('content');
+
+  const contents = {
+    want: `
+      <h2>What I Want</h2>
+      <p>
+        The goal of this Mental Health Dashboard project is to create a comprehensive platform that helps users monitor, understand, and improve their mental well-being.
+      </p>
+      <p>Specifically, I want to:</p>
+      <ul>
+        <li>Provide easy access to mental health data through an interactive dashboard.</li>
+        <li>Enable users to track symptoms, mood changes, and behavior patterns over time.</li>
+        <li>Offer insights and personalized recommendations based on collected data.</li>
+        <li>Raise awareness and reduce stigma around mental health by promoting education.</li>
+        <li>Empower users with tools to manage anxiety, depression, insomnia, and other disorders.</li>
+      </ul>
+    `,
+
+    do: `
+      <h2>What I Do</h2>
+      <p>
+        To achieve this, I have implemented multiple key features and processes:
+      </p>
+      <ul>
+        <li><strong>Data Collection:</strong> Integration with surveys, behavioral trackers, and prescription logs to gather comprehensive mental health data.</li>
+        <li><strong>Visualization:</strong> Developed dynamic charts and graphs to visualize symptom trends and correlations.</li>
+        <li><strong>Analysis Tools:</strong> Applied statistical methods and machine learning algorithms to detect risk factors and predict potential episodes.</li>
+        <li><strong>User Interface:</strong> Designed an accessible and intuitive UI focused on simplicity and clarity to encourage frequent use.</li>
+        <li><strong>Security:</strong> Ensured privacy and confidentiality of sensitive mental health data through encryption and secure access.</li>
+      </ul>
+    `,
+
+    analysis: `
+      <h2>Analysis & Results</h2>
+      <p>
+        Through comprehensive analysis, the dashboard provides valuable insights:
+      </p>
+      <ul>
+        <li><strong>Symptom Trends:</strong> Time-series analysis reveals fluctuations in anxiety, depression, and insomnia symptoms.</li>
+        <li><strong>Behavioral Correlations:</strong> Identified links between medication adherence, sleep quality, and mood changes.</li>
+        <li><strong>Risk Prediction:</strong> Machine learning models highlight individuals at higher risk, enabling early intervention.</li>
+        <li><strong>User Engagement:</strong> Tracking usage patterns helped refine the interface and increase user retention.</li>
+      </ul>
+      <p>
+        These analyses support targeted mental health interventions and personalized care plans, improving user outcomes.
+      </p>
+    `,
+
+    next: `
+      <h2>Next Steps</h2>
+      <p>
+        To enhance the dashboard's impact, the following steps are planned:
+      </p>
+      <ul>
+        <li><strong>Expand Data Integration:</strong> Incorporate wearable device data and social determinants of health.</li>
+        <li><strong>Improve Recommendations:</strong> Utilize advanced AI for personalized wellness plans and coping strategies.</li>
+        <li><strong>Community Support:</strong> Develop features for peer support and professional counseling referrals.</li>
+        <li><strong>Mobile Optimization:</strong> Enhance mobile experience for easier tracking on-the-go.</li>
+        <li><strong>Accessibility:</strong> Add multi-language support and accessibility features for diverse users.</li>
+        <li><strong>Continuous Feedback:</strong> Establish user feedback loops to iteratively improve functionality and usability.</li>
+      </ul>
+    `
+  };
+
+  function showContent(key) {
+    contentDiv.style.opacity = 0;
+    setTimeout(() => {
+      contentDiv.innerHTML = contents[key];
+      contentDiv.style.opacity = 1;
+    }, 300);
+  }
+
+  function goBack() {
+    window.location.href = 'mental heealth dashboard.html';
+  }
+</script>
+
+</body>
+</html>

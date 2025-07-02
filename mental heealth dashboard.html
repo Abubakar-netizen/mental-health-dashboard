@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mental Health & Wellness Dashboard</title>
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      font-family: Arial, sans-serif;
+      background: url('logo.JPG') no-repeat center center fixed;
+      background-size: contain;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(255, 255, 255, 0.7);
+      z-index: -1;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+      background-color: rgba(0, 105, 92, 0.85);
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar button {
+      background-color: #ffffff;
+      color: #004d40;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .navbar button:hover {
+      background-color: #c8e6c9;
+    }
+
+    .container {
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+        url('light_bg.jpg') no-repeat center center/cover;
+      min-height: 100vh;
+      padding: 2rem;
+      text-align: center;
+      color: #004d40;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .dashboard-header img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+    }
+
+    .dashboard-title {
+      font-size: 2rem;
+      font-weight: bold;
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+    }
+
+    .verse {
+      font-style: italic;
+      margin-top: 0.5rem;
+      color: #00695c;
+      background-color: rgba(255, 255, 255, 0.85);
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .disorder-section {
+      background-color: #e0f7fa;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin: 2rem auto;
+      padding: 2rem;
+      border-radius: 16px;
+      max-width: 900px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .disorder-card {
+      text-align: center;
+      transition: transform 0.3s ease;
+      background-color: #e0f2f1;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .disorder-card:hover {
+      transform: scale(1.08);
+      background-color: #b2dfdb;
+    }
+
+    .disorder-card img {
+      width: 140px;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 0.5rem;
+    }
+
+    .disorder-card p {
+      font-size: 1.2rem;
+      font-weight: bold;
+      color: #004d40;
+    }
+
+    .country-section {
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1.1rem;
+      text-align: left;
+    }
+
+    .country-section h2 {
+      margin-bottom: 1rem;
+    }
+
+    .pakistan {
+      background-color: #fff3e0;
+      color: #4e342e;
+    }
+
+    .pakistan h2 { color: #e65100; }
+
+    .india {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+
+    .india h2 { color: #1b5e20; }
+
+    .china {
+      background-color: #e3f2fd;
+      color: #1565c0;
+    }
+
+    .china h2 { color: #0d47a1; }
+
+    .show-details-btn {
+      margin-top: 1rem;
+      background-color: #ffcc80;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #e65100;
+      transition: background-color 0.3s ease;
+      display: inline-block;
+    }
+
+    .show-details-btn:hover {
+      background-color: #ffa726;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Taskbar -->
+ <div class="navbar">
+  <button onclick="location.href='ab.html'">About Me</button>
+  <button onclick="location.href='con.html'">Contact Me</button>
+  <button onclick="location.href='pr.html'">About Project</button>
+</div>
+
+
+  <!-- Main Content -->
+  <div class="container">
+    <!-- Title with Logo -->
+    <div class="dashboard-header">
+      <img src="log.JPEG" alt="Logo">
+      <div class="dashboard-title">Mental Health & Wellness Dashboard</div>
+    </div>
+
+    <!-- Inspirational Verse -->
+    <div class="verse">"And He gives healing to the hearts." — Qur'an 9:14</div>
+
+    <!-- Disorder Cards -->
+    <div class="disorder-section">
+      <a href="anx.html" class="disorder-card">
+        <img src="anx.JPEG" alt="Anxiety" />
+        <p>Anxiety</p>
+      </a>
+      <a href="dep.html" class="disorder-card">
+        <img src="dep.JPEG" alt="Depression" />
+        <p>Depression</p>
+      </a>
+      <a href="ins.html" class="disorder-card">
+        <img src="OIP.JPEG" alt="Insomnia" />
+        <p>Insomnia</p>
+      </a>
+    </div>
+
+    <!-- Country-wise Sections -->
+    <div class="country-section pakistan">
+      <h2>🇵🇰 Pakistan</h2>
+      <ul>
+        <li><strong>Anxiety:</strong> Affects approximately 34% of population at some point.</li>
+        <li><strong>Depression:</strong> Around 9 million people (approx. 5%) suffer from depression.</li>
+        <li><strong>Insomnia:</strong> Nearly 30% of adults experience sleep-related issues.</li>
+      </ul>
+      <button class="show-details-btn" onclick="window.location.href='pak.html'">📊 Show Details</button>
+    </div>
+
+    <div class="country-section india">
+      <h2>🇮🇳 India</h2>
+      <ul>
+        <li><strong>Anxiety:</strong> Over 38 million Indians suffer from anxiety disorders (~3.3%).</li>
+        <li><strong>Depression:</strong> Nearly 56 million people (4.5%) are affected.</li>
+        <li><strong>Insomnia:</strong> Roughly 20–30% of adults report chronic insomnia.</li>
+      </ul>
+	   <button class="show-details-btn" onclick="window.location.href='ind.html'">📊 Show Details</button>
+    </div>
+
+    <div class="country-section china">
+      <h2>🇨🇳 China</h2>
+      <ul>
+        <li><strong>Anxiety:</strong> Estimated 10% of population experiences anxiety symptoms.</li>
+        <li><strong>Depression:</strong> Around 95 million people (approx. 6.9%) affected.</li>
+        <li><strong>Insomnia:</strong> Roughly 15–20% of adults suffer from insomnia.</li>
+      </ul>
+	   <button class="show-details-btn" onclick="window.location.href='chi.html'">📊 Show Details</button>
+    </div>
+  </div>
+
+</body>
+</html>

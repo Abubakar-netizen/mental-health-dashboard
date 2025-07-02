@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pakistan Mental Health Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #f1f8e9, #ffffff);
+      margin: 0; padding: 0;
+    }
+    .main-content {
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+    .navbar {
+      background-color: #00695c;
+      padding: 1rem;
+      text-align: right;
+    }
+    .navbar a {
+      color: white;
+      margin-left: 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .container {
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+      flex: 1;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #004d40;
+    }
+    .category-grid {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+    .category-block {
+      width: 300px;
+      height: 220px;
+      background-color: #e0f2f1;
+      border-radius: 12px;
+      box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 10px;
+    }
+    .category-block:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 20px rgba(0,0,0,0.2);
+    }
+    .category-block img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .category-block h3 {
+      margin: 0;
+      padding: 0.4rem 0;
+      text-align: center;
+      background-color: #004d40;
+      color: white;
+      width: 100%;
+    }
+    .charts {
+      display: none;
+      margin-top: 3rem;
+    }
+    .disorder-section {
+      background-color: #f1f8e9;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .disorder-section h2, .disorder-section h3 {
+      color: #33691e;
+    }
+    .chart-row {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .chart-container {
+      width: 300px;
+      height: 280px;
+    }
+    .footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #004d40;
+      color: white;
+    }
+    button.view-btn {
+      margin-top: 12px;
+      background-color: #00796b;
+      border: none;
+      color: white;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    button.view-btn:hover {
+      background-color: #004d40;
+    }
+    .popular-meds {
+      font-size: 0.9rem;
+      color: #004d40;
+      margin-top: 6px;
+      font-style: italic;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="main-content">
+    <div class="navbar">
+      <a href="mental heealth dashboard.html">🏠 Home</a>
+      <a href="#">About</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div class="container">
+      <div class="section-title">India Mental Health Dashboard</div>
+
+      <!-- Category Selector -->
+      <div class="category-grid">
+        <div class="category-block" onclick="showSection('medical')">
+          <img src="med.JPG" alt="Medical Stats" />
+          <h3>Medical Stats</h3>
+        </div>
+
+        <div class="category-block" onclick="showSection('medication')">
+          <img src="medica.JPEG" alt="Medication" />
+          <h3>Medication</h3>
+        </div>
+
+        <div class="category-block" onclick="showSection('behavioral')">
+          <img src="behav.JPEG" alt="Behavioral" />
+          <h3>Behavioral</h3>
+        </div>
+      </div>
+
+      <!-- Medical Stats Charts -->
+      <div id="medical" class="charts">
+        <div class="disorder-section">
+          <h2>Anxiety</h2>
+          <div class="chart-row">
+            <div class="chart-container"><canvas id="anxietyPie"></canvas></div>
+            <div class="chart-container"><canvas id="anxietyLine"></canvas></div>
+          </div>
+        </div>
+
+        <div class="disorder-section">
+          <h2>Depression</h2>
+          <div class="chart-row">
+            <div class="chart-container"><canvas id="depressionPie"></canvas></div>
+            <div class="chart-container"><canvas id="depressionLine"></canvas></div>
+          </div>
+        </div>
+
+        <div class="disorder-section">
+          <h2>Insomnia</h2>
+          <div class="chart-row">
+            <div class="chart-container"><canvas id="insomniaPie"></canvas></div>
+            <div class="chart-container"><canvas id="insomniaLine"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medication Section -->
+      <div id="medication" class="charts">
+        <div class="disorder-section">
+          <h2>Medication Overview</h2>
+          <p>This section provides insight into medication usage for mental health across different age groups and genders.</p>
+          <button class="view-btn" id="btnViewMedByAge" onclick="toggleMedicationAgeCharts()">View Medication by Age Groups</button>
+        </div>
+
+        <!-- Medication by Age Group & Gender Charts (Initially hidden) -->
+        <div id="medAgeCharts" style="display:none;">
+          <div class="disorder-section">
+            <h3>Children & Teenagers</h3>
+            <div class="chart-row">
+              <div class="chart-container"><canvas id="chartChildTeen"></canvas></div>
+            </div>
+            <div class="popular-meds" id="popularMedsChildTeen"></div>
+          </div>
+
+          <div class="disorder-section">
+            <h3>Young Adults & Adults</h3>
+            <div class="chart-row">
+              <div class="chart-container"><canvas id="chartYoungAdultAdult"></canvas></div>
+            </div>
+            <div class="popular-meds" id="popularMedsYoungAdultAdult"></div>
+          </div>
+
+          <div class="disorder-section">
+            <h3>Middle-aged & Seniors & Older Seniors</h3>
+            <div class="chart-row">
+              <div class="chart-container"><canvas id="chartMidSenior"></canvas></div>
+            </div>
+            <div class="popular-meds" id="popularMedsMidSenior"></div>
+          </div>
+        </div>
+
+        <!-- Overall Comparison Chart -->
+        <div id="overallComparisonSection" style="display:none;" class="disorder-section">
+          <h2>Overall Medication Usage Comparison</h2>
+          <div class="chart-row">
+            <div class="chart-container" style="width: 600px; height: 350px;">
+              <canvas id="overallComparisonChart"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Behavioral Charts -->
+      <div id="behavioral" class="charts">
+        <div class="disorder-section">
+          <h2>Behavioral Tracking Insights</h2>
+          <div class="chart-row" style="width: 100%;">
+            <canvas id="behaviorBar"></canvas>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="footer">
+    &copy; 2025 Mental Health Dashboard | Developed by Abubakar Awan
+  </div>
+
+  <script>
+    // Manage showing/hiding main sections
+    function showSection(sectionId) {
+      document.querySelectorAll('.charts').forEach(sec => sec.style.display = 'none');
+      document.getElementById(sectionId).style.display = 'block';
+
+      // Hide medication age charts and overall when switching away
+      if(sectionId !== 'medication'){
+        document.getElementById('medAgeCharts').style.display = 'none';
+        document.getElementById('overallComparisonSection').style.display = 'none';
+        document.getElementById('btnViewMedByAge').innerText = 'View Medication by Age Groups';
+        medChartsVisible = false;
+      }
+
+      // Initialize charts on first show
+      if(sectionId === 'medical' && !medicalChartsInitialized) {
+        initMedicalCharts();
+        medicalChartsInitialized = true;
+      }
+      if(sectionId === 'behavioral' && !behavioralChartInitialized) {
+        initBehavioralChart();
+        behavioralChartInitialized = true;
+      }
+    }
+
+    // Flags for initialization
+    let medicalChartsInitialized = false;
+    let behavioralChartInitialized = false;
+    let medChartsVisible = false;
+
+    // Data for medical stats
+    const medicalData = {
+      anxiety: {
+        male: 80, female: 90,
+        trend: [78, 28, 90, 22, 55, 60, 60, 30, 85, 90]
+      },
+      depression: {
+        male: 90, female: 80,
+        trend: [56, 72, 63, 65, 66, 098, 63, 70, 75, 10]
+      },
+      insomnia: {
+        male: 90, female: 100,
+        trend: [80, 82, 85, 87, 89, 90, 95, 97, 99, 100]
+      }
+    };
+
+    // Medication data by age group and gender
+    const medData = {
+      childTeen: {
+        'Antidepressants': { male: 60, female: 89 },
+        'Antipsychotics': { male: 80, female: 30 },
+        'Anxiolytics': { male: 23, female: 75 }
+      },
+      youngAdultAdult: {
+        'Antidepressants': { male: 110, female: 100 },
+        'Antipsychotics': { male: 120, female: 90 },
+        'Anxiolytics': { male: 600, female: 115 }
+      },
+      midSenior: {
+        'Antidepressants': { male: 10, female: 135 },
+        'Antipsychotics': { male: 2340, female: 120 },
+        'Anxiolytics': { male: 85, female: 45 }
+      }
+    };
+
+    // Function to create pie chart for medical disorders
+    function createDisorderPieChart(ctxId, maleVal, femaleVal, title) {
+      const ctx = document.getElementById(ctxId).getContext('2d');
+      return new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: ['Male', 'Female'],
+          datasets: [{
+            data: [maleVal, femaleVal],
+            backgroundColor: ['#4db6ac', '#81c784']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: title + ' Prevalence', font: { size: 18 } }
+          }
+        }
+      });
+    }
+
+    // Function to create line chart for medical trends
+    function createDisorderLineChart(ctxId, dataArray, title) {
+      const ctx = document.getElementById(ctxId).getContext('2d');
+      return new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: Array.from({length: dataArray.length}, (_, i) => 2010 + i),
+          datasets: [{
+            label: title + ' Cases Over Years',
+            data: dataArray,
+            borderColor: '#4db6ac',
+            backgroundColor: 'rgba(77, 182, 172, 0.3)',
+            fill: true,
+            tension: 0.3
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: title + ' Trend', font: { size: 18 } }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: 100
+            }
+          }
+        }
+      });
+    }
+
+    // Initialize all medical charts
+    function initMedicalCharts() {
+      createDisorderPieChart('anxietyPie', medicalData.anxiety.male, medicalData.anxiety.female, 'Anxiety');
+      createDisorderLineChart('anxietyLine', medicalData.anxiety.trend, 'Anxiety');
+
+      createDisorderPieChart('depressionPie', medicalData.depression.male, medicalData.depression.female, 'Depression');
+      createDisorderLineChart('depressionLine', medicalData.depression.trend, 'Depression');
+
+      createDisorderPieChart('insomniaPie', medicalData.insomnia.male, medicalData.insomnia.female, 'Insomnia');
+      createDisorderLineChart('insomniaLine', medicalData.insomnia.trend, 'Insomnia');
+    }
+
+    // Behavioral chart initialization
+    function initBehavioralChart() {
+      const ctx = document.getElementById('behaviorBar').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Positive', 'Neutral', 'Negative'],
+          datasets: [{
+            label: 'Behavioral Health Status',
+            data: [44, 33, 92],
+            backgroundColor: ['#81c784', '#ffd54f', '#e57373']
+          }]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: false },
+            title: { display: true, text: 'Behavioral Tracking Overview', font: { size: 18 } }
+          },
+          scales: {
+            y: { beginAtZero: true, max: 100 }
+          }
+        }
+      });
+    }
+
+    // Function to create medication charts for a given age group
+    function createMedAgeGenderChart(canvasId, ageGroupKey) {
+      const ctx = document.getElementById(canvasId).getContext('2d');
+      const meds = Object.keys(medData[ageGroupKey]);
+      const maleData = meds.map(med => medData[ageGroupKey][med].male);
+      const femaleData = meds.map(med => medData[ageGroupKey][med].female);
+
+      return new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: meds,
+          datasets: [
+            {
+              label: 'Male',
+              data: maleData,
+              backgroundColor: '#4db6ac'
+            },
+            {
+              label: 'Female',
+              data: femaleData,
+              backgroundColor: '#81c784'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Medication Usage by Gender', font: { size: 18 } }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...maleData.concat(femaleData)) + 50,
+              title: { display: true, text: 'Percentage (%)' }
+            }
+          }
+        }
+      });
+    }
+
+    // Overall comparison chart for medication usage
+    function createOverallComparisonChart(ctxId) {
+      const ctx = document.getElementById(ctxId).getContext('2d');
+      const meds = ['Antidepressants', 'Antipsychotics', 'Anxiolytics'];
+      const maleData = meds.map(med => {
+        return (medData.childTeen[med]?.male || 0) + (medData.youngAdultAdult[med]?.male || 0) + (medData.midSenior[med]?.male || 0);
+      });
+      const femaleData = meds.map(med => {
+        return (medData.childTeen[med]?.female || 0) + (medData.youngAdultAdult[med]?.female || 0) + (medData.midSenior[med]?.female || 0);
+      });
+
+      return new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: meds,
+          datasets: [
+            {
+              label: 'Male',
+              data: maleData,
+              backgroundColor: '#4db6ac'
+            },
+            {
+              label: 'Female',
+              data: femaleData,
+              backgroundColor: '#81c784'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'Overall Medication Usage Comparison', font: { size: 18 } }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              max: Math.max(...maleData.concat(femaleData)) + 100,
+              title: { display: true, text: 'Total Percentage (%)' }
+            }
+          }
+        }
+      });
+    }
+
+    // Variables to hold medication charts instances so we don't recreate them
+    let medChildTeenChart, medYoungAdultAdultChart, medMidSeniorChart, overallComparisonChart;
+
+    // Toggle medication age charts visibility and initialize charts if needed
+    function toggleMedicationAgeCharts() {
+      medChartsVisible = !medChartsVisible;
+      const ageCharts = document.getElementById('medAgeCharts');
+      const overallChartSection = document.getElementById('overallComparisonSection');
+      const btn = document.getElementById('btnViewMedByAge');
+
+      if(medChartsVisible){
+        ageCharts.style.display = 'block';
+        overallChartSection.style.display = 'block';
+        btn.innerText = 'Hide Medication by Age Groups';
+
+        if(!medChildTeenChart) {
+          medChildTeenChart = createMedAgeGenderChart('chartChildTeen', 'childTeen');
+          medYoungAdultAdultChart = createMedAgeGenderChart('chartYoungAdultAdult', 'youngAdultAdult');
+          medMidSeniorChart = createMedAgeGenderChart('chartMidSenior', 'midSenior');
+          overallComparisonChart = createOverallComparisonChart('overallComparisonChart');
+          updatePopularMedsTexts();
+        }
+      } else {
+        ageCharts.style.display = 'none';
+        overallChartSection.style.display = 'none';
+        btn.innerText = 'View Medication by Age Groups';
+      }
+    }
+
+    // Update the popular meds text below each medication age chart
+    function updatePopularMedsTexts() {
+      const keys = ['childTeen', 'youngAdultAdult', 'midSenior'];
+      const elements = [
+        document.getElementById('popularMedsChildTeen'),
+        document.getElementById('popularMedsYoungAdultAdult'),
+        document.getElementById('popularMedsMidSenior')
+      ];
+
+      keys.forEach((key, idx) => {
+        const meds = Object.keys(medData[key]);
+        // Find med with highest combined male+female usage
+        let topMed = meds[0];
+        let maxUsage = 0;
+        meds.forEach(med => {
+          let usage = medData[key][med].male + medData[key][med].female;
+          if (usage > maxUsage) {
+            maxUsage = usage;
+            topMed = med;
+          }
+        });
+        elements[idx].textContent = `Most popular medication: ${topMed}`;
+      });
+    }
+
+    // Initialize first view - show no charts until a category is clicked
+    // (Optional: you can uncomment below to show Medical by default)
+    // showSection('medical');
+  </script>
+
+</body>
+</html>

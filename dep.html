@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Depression - Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #dfefff, #f0faff);
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    .taskbar {
+      background-color: #004d99;
+      padding: 1rem 2rem;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .taskbar button {
+      background-color: white;
+      color: #004d99;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .taskbar button:hover {
+      background-color: #e0ebff;
+      transform: scale(1.1);
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .card {
+      background-color: #e3f2fd;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 14px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+
+    .definition {
+      background-color: #f0f8ff;
+      border-left: 6px solid #36A2EB;
+      padding: 1.2rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      text-align: left;
+      font-size: 1rem;
+    }
+
+    .definition p {
+      margin-bottom: 0.7rem;
+    }
+
+    .buttons {
+      margin-bottom: 2rem;
+    }
+
+    .buttons button {
+      background-color: #36A2EB;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 30px;
+      cursor: pointer;
+      font-weight: bold;
+      margin: 0.5rem;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .buttons button:hover {
+      background-color: #1e88d2;
+      transform: scale(1.08);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    .chart-card {
+      display: none;
+      background-color: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+      max-width: 800px;
+      margin: 2rem auto;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeIn 0.5s ease forwards;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 350px !important;
+      margin-top: 1rem;
+    }
+
+    .chart-description {
+      text-align: left;
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="taskbar">
+    <button onclick="history.back()">⬅ Back</button>
+    <h2>Depression Analysis Panel</h2>
+    <button onclick="window.location.href='https://www.verywellmind.com/what-are-the-best-antidepressants-1065113'">💊 Medicines</button>
+  </div>
+
+  <div class="container">
+    <div class="card">
+      <h1>Understanding Depression</h1>
+      <div class="definition">
+        <p><strong>Description:</strong> Depression is more than just feeling sad or having a rough patch. It's a serious mental health condition that affects mood, thoughts, and behavior, impacting daily life, relationships, and physical health.</p>
+        <p><strong>Characteristics:</strong> Symptoms include prolonged sadness, fatigue, irritability, lack of interest in activities, appetite and sleep changes, and thoughts of hopelessness.</p>
+        <p><strong>Importance:</strong> Recognizing patterns, causes, and affected groups can help in early intervention and effective treatment planning.</p>
+        <button onclick="window.open('https://www.mayoclinic.org/diseases-conditions/depression/symptoms-causes/syc-20356007', '_blank')">Learn More from Mayo Clinic</button>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button onclick="showChart('age')">📊 Severity by Age Group</button>
+      <button onclick="showChart('symptom')">📌 Common Symptoms</button>
+      <button onclick="showChart('cause')">🔍 Major Causes</button>
+    </div>
+
+    <div id="age" class="chart-card">
+      <h3>Severity by Age Group</h3>
+      <canvas id="ageChart"></canvas>
+      <div class="chart-description">
+        <p>This bar chart shows how depression severity varies across different age groups. Young adults in their 20s report the highest severity, possibly due to academic, career, and social pressures. Older adults report lower severity, potentially due to greater life stability or underreporting.</p>
+      </div>
+    </div>
+
+    <div id="symptom" class="chart-card">
+      <h3>Common Symptoms of Depression</h3>
+      <canvas id="symptomChart"></canvas>
+      <div class="chart-description">
+        <p>Fatigue, sleep disturbances, and sadness are the most reported symptoms. This data helps clinicians focus on the most disruptive and frequent experiences of people suffering from depression.</p>
+      </div>
+    </div>
+
+    <div id="cause" class="chart-card">
+      <h3>Major Causes of Depression</h3>
+      <canvas id="causeChart"></canvas>
+      <div class="chart-description">
+        <p>Depression is a complex condition with multiple causes. Genetics and brain chemistry account for over half of the cases, while environmental factors and trauma also play significant roles. This pie chart highlights how treatment might vary depending on the underlying cause.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const charts = {
+      age: new Chart(document.getElementById('ageChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Teens', '20s', '30s', '40s', '50s+'],
+          datasets: [{
+            label: 'Severity (0–20)',
+            data: [12, 17, 15, 14, 10],
+            backgroundColor: '#36A2EB'
+          }]
+        },
+        options: {
+          responsive: true,
+          animation: {
+            duration: 1000,
+            easing: 'easeInOutQuart'
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      }),
+
+      symptom: new Chart(document.getElementById('symptomChart'), {
+        type: 'bar',
+        data: {
+          labels: ['Sadness', 'Fatigue', 'Sleep Issues', 'Lack of Interest', 'Concentration Issues'],
+          datasets: [{
+            label: 'Reported Frequency (%)',
+            data: [90, 75, 80, 85, 70],
+            backgroundColor: '#FF6384'
+          }]
+        },
+        options: {
+          responsive: true,
+          animation: {
+            duration: 1000,
+            easing: 'easeInOutQuart'
+          },
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      }),
+
+      cause: new Chart(document.getElementById('causeChart'), {
+        type: 'pie',
+        data: {
+          labels: ['Genetics', 'Environment', 'Brain Chemistry', 'Trauma', 'Medical Illness'],
+          datasets: [{
+            label: 'Causes',
+            data: [30, 20, 25, 15, 10],
+            backgroundColor: ['#FFCE56', '#36A2EB', '#FF6384', '#4BC0C0', '#9966FF']
+          }]
+        },
+        options: {
+          responsive: true,
+          animation: {
+            duration: 1000,
+            easing: 'easeInOutBack'
+          }
+        }
+      })
+    };
+
+    function showChart(chartId) {
+      document.querySelectorAll('.chart-card').forEach(card => {
+        card.style.display = 'none';
+        card.style.opacity = '0';
+      });
+      const selected = document.getElementById(chartId);
+      selected.style.display = 'block';
+      setTimeout(() => selected.style.animation = 'fadeIn 0.5s ease forwards', 50);
+    }
+  </script>
+
+</body>
+</html>
